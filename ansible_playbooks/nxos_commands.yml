@@ -1,0 +1,58 @@
+---
+- name: Execute commands on NX-OS device, interact with Bash, and use Guest Shell
+  hosts: nxos
+  gather_facts: no
+
+  tasks:
+    - name: Show version
+      cisco.nxos.nxos_command:
+        commands:
+          - show version
+      register: version_output
+
+    - name: Show hostname
+      cisco.nxos.nxos_command:
+        commands:
+          - show hostname
+      register: hostname_output
+
+    - name: Show IP interface brief
+      cisco.nxos.nxos_command:
+        commands:
+          - show ip interface brief
+      register: interface_output
+
+    - name: Run whoami command in Bash and exit Bash shell
+      cisco.nxos.nxos_command:
+        commands:
+          - run bash whoami
+          - run bash pwd
+          - run bash exit
+      register: bash_output
+
+    - name: Enter Guest Shell and run dohost commands
+      cisco.nxos.nxos_command:
+        commands:
+          - guestshell run dohost "show cdp global"
+          - guestshell run dohost "show ssh server"
+      register: guestshell_output
+
+    - name: Print version output
+      debug:
+        msg: "{{ version_output.stdout_lines }}"
+
+    - name: Print hostname output
+      debug:
+        msg: "{{ hostname_output.stdout_lines }}"
+
+    - name: Print IP interface brief output
+      debug:
+        msg: "{{ interface_output.stdout_lines }}"
+
+    - name: Print Bash command output
+      debug:
+        msg: "{{ bash_output.stdout_lines }}"
+
+    - name: Print Guest Shell command output
+      debug:
+        msg: "{{ guestshell_output.stdout_lines }}"
