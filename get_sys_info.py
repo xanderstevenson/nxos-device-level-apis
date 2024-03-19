@@ -32,24 +32,3 @@ print("UPTIME:", sys_info.get("systemUpTime"))
 print(
     "CURRENT STATE:", sys_info.get("state", "Unavailable")
 )  # Provide a default value in case 'state' does not exist
-
-# Define USR_URL and USR_PAYLOAD variables
-USR_URL = "https://sbx-nxos-mgmt.cisco.com/api/node/mo/sys/userext.json"
-USR_PAYLOAD = {
-    "aaaUser": {
-        "attributes": {
-            "pwdEncryptType": "0",
-            "name": "temp_user",
-            "pwd": "temp_password",
-            "expires": "yes",
-            "expiration": "2030-07-31",
-        }
-    }
-}
-
-# Create a user with REST API's POST method
-usr_create = session.post(USR_URL, json=USR_PAYLOAD)
-
-# Check if creation was successful and if yes print such message
-if usr_create.ok:
-    print("USER WAS SUCCESSFULLY CREATED!")
