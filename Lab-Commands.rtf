@@ -51,13 +51,13 @@ exit
 # Python interpreter
 
 python
-from cli import *
-import json
 
 
 # Python code
 # Retrieve the interface list in JSON format
 
+from cli import *
+import json
 intflist = json.loads(clid('show interface brief'))
 
 # Loop through the interfaces and print those that are 'up'
@@ -79,10 +79,12 @@ exit
 NETCONF, RESTCONF, and gRPC
 ---------------------------
 
-# Install NCCLient and run code in Python interpreter
+# Install NCCLient and run code in Python interpreter (this step may not work at Cisco Live)
 
 pip install ncclient
+
 python
+
 from ncclient import manager
 nxv = manager.connect(host="131.226.217.151", port=830, username="admin", password="Admin_1234!", device_params={'name':'nexus'}, hostkey_verify=False)
 print(nxv.get_config(source='running', filter="<filter><System xmlns='http://cisco.com/ns/yang/cisco-nx-os-device'></System></filter>").data_xml)
