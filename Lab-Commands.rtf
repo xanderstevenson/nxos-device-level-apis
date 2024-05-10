@@ -4,16 +4,26 @@
 SSH, Bash, the Guest Shell, and Python Scripting
 ------------------------------------------------
 
-# Create and activate a virtual environment
-python3 -m venv venv
-source venv/bin/activate
+# Change directory (cd) to our workshop directory (if you are at Cisco Live)
 
-# Clone repo with files
+cd /home/devnet/workshop/DEVWKS-2037
+
+
+# Create and activate a virtual environment
+
+python3 -m venv <CHOOSE A NAME>
+source <NAME YOU CHOSE>/bin/activate
+
+
+# Clone repo with files (not necessary if you are at Cisco Live)
+
 git clone https://github.com/xanderstevenson/nxos-device-level-apis.git
 cd nxos-device-level-apis
 ls
 
+
 # SSH into DevNet sandbox
+
 ssh admin@sbx-nxos-mgmt.cisco.com
 yes
 Admin_1234!
@@ -22,24 +32,32 @@ show version
 show hostname
 show ip interface brief
 
+
 # Run Bash
+
 run bash
 whoami
 pwd
 exit
 
+
 # Run Guestshell
+
 guestshell
 dohost "show cdp global" "show ssh server"
 exit
 
+
 # Python interpreter
+
 python
 from cli import *
 import json
 
+
 # Python code
 # Retrieve the interface list in JSON format
+
 intflist = json.loads(clid('show interface brief'))
 
 # Loop through the interfaces and print those that are 'up'
@@ -55,12 +73,14 @@ exit()
 exit
 
 
+
 2. WALK
 ---------------------------
 NETCONF, RESTCONF, and gRPC
 ---------------------------
 
 # Install NCCLient and run code in Python interpreter
+
 pip install ncclient
 python
 from ncclient import manager
@@ -75,8 +95,10 @@ Using Ansible to Abstract Away SSH, Bash, and Guest Shell Commands
 ------------------------------------------------------------------
 
 # Install paramiko and run Ansible playbook
+
 pip install paramiko
 ansible-playbook ansible_playbooks/nxos_commands.yml -i hosts
+
 
 
 4. RUN
@@ -85,10 +107,12 @@ NX-API: Device-level RESTful API Automation
 -------------------------------------------
 
 # SSH into device and check nxapi feature
+
 ssh admin@sbx-nxos-mgmt.cisco.com
 Admin_1234!
 show feature | include nxapi
 exit
+
 
 
 5. FLY
@@ -97,11 +121,14 @@ Interact with NX-OS using Python
 --------------------------------
 
 # Install Requests and run Python file
+
 pip install requests
 python get_sys_info.py
 
+
 # Add this to the end of python get_sys_info.py
 # Define USR_URL and USR_PAYLOAD variables
+
 USR_URL = "https://sbx-nxos-mgmt.cisco.com/api/node/mo/sys/userext.json"
 USR_PAYLOAD = {
     "aaaUser": {
@@ -115,17 +142,25 @@ USR_PAYLOAD = {
     }
 }
 
+
 # Create a user with REST API's POST method
+
 usr_create = session.post(USR_URL, json=USR_PAYLOAD)
 
+
 # Check if creation was successful and if yes print such message
+
 if usr_create.ok:
     print("USER WAS SUCCESSFULLY CREATED!")
 
+
 # Run Python file again to add USer
+
 python get_sys_info.py
 
+
 # SSH into device to make sure User was added
+
 ssh admin@sbx-nxos-mgmt.cisco.com
 Admin_1234!
 terminal length 0
