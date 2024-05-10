@@ -144,19 +144,16 @@ USR_PAYLOAD = {
     }
 }
 
-
 # Create a user with REST API's POST method
-
 usr_create = session.post(USR_URL, json=USR_PAYLOAD)
 
-
 # Check if creation was successful and if yes print such message
-
 if usr_create.ok:
     print("USER WAS SUCCESSFULLY CREATED!")
 
 
-# Run Python file again to add USer
+
+# Run Python file again to add User
 
 python get_sys_info.py
 
