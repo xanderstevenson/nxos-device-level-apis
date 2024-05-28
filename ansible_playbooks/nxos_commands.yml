@@ -22,19 +22,55 @@
           - show ip interface brief
       register: interface_output
 
-    - name: Run whoami command in Bash and exit Bash shell
+    - name: Run whoami command in Bash
       cisco.nxos.nxos_command:
         commands:
           - run bash whoami
+      register: whoami_output
+
+    - name: Print whoami command output
+      debug:
+        msg: "{{ whoami_output.stdout_lines }}"
+
+    - name: Run pwd command in Bash
+      cisco.nxos.nxos_command:
+        commands:
           - run bash pwd
-          - run bash exit
-      register: bash_output
+      register: pwd_output
+
+    - name: Print pwd command output
+      debug:
+        msg: "{{ pwd_output.stdout_lines }}"
+
+    - name: List files in /bootflash directory in Bash
+      cisco.nxos.nxos_command:
+        commands:
+          - run bash ls -l /bootflash
+      register: ls_output
+
+    - name: Print list of files in /bootflash
+      debug:
+        msg: "{{ ls_output.stdout_lines }}"
+
+    - name: Run process list command in Bash
+      cisco.nxos.nxos_command:
+        commands:
+          - run bash ps -aux
+      register: ps_output
+
+    - name: Print process list command output
+      debug:
+        msg: "{{ ps_output.stdout_lines }}"
 
     - name: Enter Guest Shell and run dohost commands
       cisco.nxos.nxos_command:
         commands:
           - guestshell run dohost "show cdp global"
           - guestshell run dohost "show ssh server"
+          - guestshell run python -V
+          - guestshell run python3 -V
+          - guestshell run cat nxos_resources.py
+          - guestshell run python3 nxos_resources.py
       register: guestshell_output
 
     - name: Print version output
@@ -48,10 +84,6 @@
     - name: Print IP interface brief output
       debug:
         msg: "{{ interface_output.stdout_lines }}"
-
-    - name: Print Bash command output
-      debug:
-        msg: "{{ bash_output.stdout_lines }}"
 
     - name: Print Guest Shell command output
       debug:
